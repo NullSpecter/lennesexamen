@@ -58,15 +58,40 @@
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             max-width: 500px;
+            width: 90%; /* Flexibelt för mindre skärmar */
+        }
+        /* Responsiv design */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                display: flex;
+                justify-content: center;
+                padding: 10px 0;
+            }
+            .sidebar a {
+                font-size: 16px;
+                padding: 10px;
+                margin: 0 5px;
+                background-color: #FF69B4;
+                border-radius: 5px;
+            }
+            .content {
+                margin-left: 0; /* Ingen marginal när sidopanelen är horisontell */
+            }
+            body {
+                font-size: 14px;
+            }
+            header h1 {
+                font-size: 20px;
+            }
         }
     </style>
     <script>
         function showSection(sectionId) {
-            // Dölj alla sektioner
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => section.classList.remove('active'));
-
-            // Visa den valda sektionen
             const targetSection = document.getElementById(sectionId);
             targetSection.classList.add('active');
         }
@@ -84,34 +109,29 @@
     </div>
 
     <div class="content">
-        <!-- Mer information sektion -->
         <div id="info" class="section active">
             <div class="card">
                 <h2>Detaljer</h2>
                 <p><strong>Datum:</strong> 28 juni 2025</p>
                 <p><strong>Plats:</strong> Kontorsvägen 8</p>
-                <p><strong>Klädkod:</strong> FÄRG. Svart är förbjudet</p>
+                <p><strong>Klädkod:</strong> FÄRG. Svart är förbjudet.</p>
             </div>
         </div>
 
-        <!-- Gästlista sektion -->
         <div id="guestlist" class="section">
             <div class="card">
                 <h2>Gästlista</h2>
-                <p>Här är de som kommer till festen:</p>
                 <ul>
-                    <li>Lenne</li>
+                    <li>Lenneking</li>
                     <li>Lotta Jansson Nurmilehto</li>
-                    <li>Ma</li>
+                    <li>Eivi</li>
                 </ul>
             </div>
         </div>
 
-        <!-- OSA sektion -->
         <div id="osa" class="section">
             <div class="card">
                 <h2>OSA</h2>
-                <p>Vänligen fyll i formuläret för att svara om du kommer eller inte:</p>
                 <form>
                     <label for="name">Namn:</label>
                     <input type="text" id="name" name="name" required>
