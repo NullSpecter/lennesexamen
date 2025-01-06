@@ -11,18 +11,45 @@
             padding: 0;
             background-color: #f9f9f9;
             color: #333;
-            text-align: center;
         }
         header {
             background-color: #FFE4E1;
-            color: white;
+            color: #333;
+            text-align: center;
             padding: 20px 0;
         }
         header h1 {
             margin: 0;
         }
-        section {
+        .sidebar {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #FFC0CB;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .sidebar a:hover {
+            background-color: #FF69B4;
+        }
+        .content {
+            margin-left: 220px; /* Utrymme för sidopanelen */
             padding: 20px;
+        }
+        .section {
+            display: none; /* Göm sektioner som standard */
+        }
+        .section.active {
+            display: block; /* Visa den aktiva sektionen */
         }
         .card {
             background-color: white;
@@ -32,23 +59,71 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             max-width: 500px;
         }
-        footer {
-            margin-top: 20px;
-            padding: 10px 0;
-            background-color: #4CAF50;
-            color: white;
-        }
     </style>
+    <script>
+        function showSection(sectionId) {
+            // Dölj alla sektioner
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            // Visa den valda sektionen
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add('active');
+        }
+    </script>
 </head>
 <body>
     <header>
         <h1>LENNES EXAMENSFEST</h1>
     </header>
-    <section>
-        <div class="card">
-            <h2>Detaljer</h2>
-            <p><strong>Datum:</strong> 28 juni 2025</p>
-            <p><strong>Plats:</strong> Kontorsvägen 8</p>
-            <p><strong>Klädkod:</strong> FÄRG</p>
+
+    <div class="sidebar">
+        <a href="#" onclick="showSection('info')">Mer information</a>
+        <a href="#" onclick="showSection('guestlist')">Gästlista</a>
+        <a href="#" onclick="showSection('osa')">OSA</a>
+    </div>
+
+    <div class="content">
+        <!-- Mer information sektion -->
+        <div id="info" class="section active">
+            <div class="card">
+                <h2>Detaljer</h2>
+                <p><strong>Datum:</strong> 28 juni 2025</p>
+                <p><strong>Plats:</strong> Kontorsvägen 8</p>
+                <p><strong>Klädkod:</strong> FÄRG</p>
+            </div>
         </div>
-        <div class="card
+
+        <!-- Gästlista sektion -->
+        <div id="guestlist" class="section">
+            <div class="card">
+                <h2>Gästlista</h2>
+                <p>Här är de som kommer till festen:</p>
+                <ul>
+                    <li>Lenne</li>
+                    <li>Lotta Jansson Nurmilehto</li>
+                    <li>Ma</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- OSA sektion -->
+        <div id="osa" class="section">
+            <div class="card">
+                <h2>OSA</h2>
+                <p>Vänligen fyll i formuläret för att svara om du kommer eller inte:</p>
+                <form>
+                    <label for="name">Namn:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="attendance">Kommer du?</label>
+                    <select id="attendance" name="attendance">
+                        <option value="yes">Ja</option>
+                        <option value="no">Nej</option>
+                    </select>
+                    <button type="submit">Skicka</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
