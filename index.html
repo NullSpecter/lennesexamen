@@ -6,11 +6,9 @@
     <title>Examensfest 2025</title>
     <!-- Lägg till Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Lägg till Lightbox CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif; /* Modernt typsnitt för huvudinnehåll */
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f9f9f9;
@@ -23,9 +21,9 @@
             padding: 20px 0;
         }
         header h1 {
-            font-family: 'Playfair Display', serif; /* Proffsigt och elegant typsnitt */
+            font-family: 'Playfair Display', serif;
             font-size: 36px;
-            color: #FF69B4; /* Rosa text */
+            color: #FF69B4;
             margin: 0;
         }
         .sidebar {
@@ -39,7 +37,6 @@
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
         }
         .sidebar a {
-            font-family: 'Poppins', sans-serif; /* Modernt typsnitt för länkar */
             display: block;
             color: white;
             padding: 10px 15px;
@@ -50,14 +47,14 @@
             background-color: #FF69B4;
         }
         .content {
-            margin-left: 220px; /* Utrymme för sidopanelen */
+            margin-left: 220px;
             padding: 20px;
         }
         .section {
-            display: none; /* Göm sektioner som standard */
+            display: none;
         }
         .section.active {
-            display: block; /* Visa den aktiva sektionen */
+            display: block;
         }
         .card {
             background-color: white;
@@ -66,30 +63,57 @@
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             max-width: 500px;
-            width: 90%; /* Flexibelt för mindre skärmar */
+            text-align: center;
+            position: relative;
         }
         .card h2 {
-            font-family: 'Playfair Display', serif; /* Samma typsnitt för korttitlar */
+            font-family: 'Playfair Display', serif;
             font-size: 24px;
             color: #FF69B4;
         }
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+
+        /* Bilder ovanför kortet */
+        .image-wrapper {
+            position: absolute;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
             gap: 10px;
-            padding: 20px;
+            justify-content: center;
         }
-        .gallery-grid img {
-            width: 100%;
-            height: auto;
+
+        .image-wrapper img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: slide-in 1.5s forwards ease-in-out;
         }
-        .gallery-grid img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+        .image-wrapper img:nth-child(1) {
+            animation-delay: 0.2s;
         }
+        .image-wrapper img:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+        .image-wrapper img:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes slide-in {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 position: relative;
@@ -107,26 +131,17 @@
                 border-radius: 5px;
             }
             .content {
-                margin-left: 0; /* Ingen marginal när sidopanelen är horisontell */
+                margin-left: 0;
             }
-            body {
-                font-size: 14px;
+            .image-wrapper {
+                top: -120px;
             }
-            header h1 {
-                font-size: 28px;
+            .image-wrapper img {
+                width: 80px;
+                height: 80px;
             }
         }
     </style>
-    <!-- Lägg till Lightbox JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
-    <script>
-        function showSection(sectionId) {
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => section.classList.remove('active'));
-            const targetSection = document.getElementById(sectionId);
-            targetSection.classList.add('active');
-        }
-    </script>
 </head>
 <body>
     <header>
@@ -137,12 +152,18 @@
         <a href="#" onclick="showSection('info')">Mer information</a>
         <a href="#" onclick="showSection('guestlist')">Gästlista</a>
         <a href="#" onclick="showSection('osa')">OSA</a>
-        <a href="#" onclick="showSection('gallery')">Galleri</a>
     </div>
 
     <div class="content">
         <div id="info" class="section active">
             <div class="card">
+                <!-- Bilder som glider in -->
+                <div class="image-wrapper">
+                    <img src="bild1.jpg" alt="Bild 1">
+                    <img src="bild2.jpg" alt="Bild 2">
+                    <img src="bild3.jpg" alt="Bild 3">
+                </div>
+                <!-- Kortet med text -->
                 <h2>Detaljer</h2>
                 <p><strong>Datum:</strong> 28 juni 2025</p>
                 <p><strong>Plats:</strong> Kontorsvägen 8</p>
@@ -176,23 +197,15 @@
                 </form>
             </div>
         </div>
-
-        <div id="gallery" class="section">
-            <h2>Min studietid</h2>
-            <div class="gallery-grid">
-                <a href="bild1.jpg" data-lightbox="gallery"><img src="bild1.jpg" alt="Bild 1"></a>
-                <a href="bild2.jpg" data-lightbox="gallery"><img src="bild2.jpg" alt="Bild 2"></a>
-                <a href="bild3.jpg" data-lightbox="gallery"><img src="bild3.jpg" alt="Bild 3"></a>
-                <a href="bild4.jpg" data-lightbox="gallery"><img src="bild4.jpg" alt="Bild 4"></a>
-                <a href="bild5.jpg" data-lightbox="gallery"><img src="bild5.jpg" alt="Bild 5"></a>
-                <a href="bild6.jpg" data-lightbox="gallery"><img src="bild6.jpg" alt="Bild 6"></a>
-                <a href="bild7.jpg" data-lightbox="gallery"><img src="bild7.jpg" alt="Bild 7"></a>
-                <a href="bild8.jpg" data-lightbox="gallery"><img src="bild8.jpg" alt="Bild 8"></a>
-                <a href="bild9.jpg" data-lightbox="gallery"><img src="bild9.jpg" alt="Bild 9"></a>
-                <a href="bild10.jpg" data-lightbox="gallery"><img src="bild10.jpg" alt="Bild 10"></a>
-                <a href="bild11.jpg" data-lightbox="gallery"><img src="bild11.jpg" alt="Bild 11"></a>
-            </div>
-        </div>
     </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add('active');
+        }
+    </script>
 </body>
 </html>
