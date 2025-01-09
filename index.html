@@ -72,6 +72,11 @@
             font-size: 24px;
             color: #FF69B4;
         }
+        .countdown {
+            font-size: 20px;
+            color: #FF69B4;
+            margin: 20px 0;
+        }
         .reminder-form input[type="email"] {
             padding: 10px;
             width: 80%;
@@ -139,6 +144,31 @@
             }
         }
     </style>
+    <script>
+        // Nedräkning till ett specifikt datum
+        const countdownDate = new Date("2025-06-15T00:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML = `
+                    ${days} dagar ${hours} timmar ${minutes} minuter ${seconds} sekunder
+                `;
+            } else {
+                document.getElementById("countdown").innerHTML = "Mer information finns nu tillgänglig!";
+            }
+        }
+
+        // Uppdatera nedräkningen varje sekund
+        setInterval(updateCountdown, 1000);
+    </script>
 </head>
 <body>
     <header>
@@ -161,8 +191,8 @@
                     <p><strong>Klädkod:</strong> FÄRG. Svart är förbjudet.</p>
                 </div>
                 <div class="card">
-                    <h2>Mer detaljer om festen kommer....</h2>
-                    <p>Vill du få en påminnelse när det finns mer information här?</p>
+                    <h2>Mer detaljer om festen kommer...</h2>
+                    <p class="countdown" id="countdown">Laddar...</p>
                     <form class="reminder-form">
                         <input type="email" id="email" name="email" placeholder="Din e-postadress" required>
                         <button type="submit">Skicka</button>
@@ -194,14 +224,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function showSection(sectionId) {
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => section.classList.remove('active'));
-            const targetSection = document.getElementById(sectionId);
-            targetSection.classList.add('active');
-        }
-    </script>
 </body>
 </html>
