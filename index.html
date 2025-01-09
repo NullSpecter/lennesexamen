@@ -76,16 +76,16 @@
         .image-wrapper {
             margin-top: 20px;
             display: flex;
-            gap: 10px;
+            gap: 20px; /* Mer avstånd mellan bilder */
             justify-content: center;
         }
 
         .image-wrapper img {
-            width: 100px;
-            height: 100px;
+            width: 200px; /* Större bredd */
+            height: 200px; /* Större höjd */
             object-fit: cover;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             opacity: 0;
             animation: slide-in 1.5s forwards ease-in-out;
         }
@@ -131,8 +131,8 @@
                 margin-left: 0;
             }
             .image-wrapper img {
-                width: 80px;
-                height: 80px;
+                width: 150px; /* Anpassa för mindre skärmar */
+                height: 150px;
             }
         }
     </style>
