@@ -72,12 +72,9 @@
             color: #FF69B4;
         }
 
-        /* Bilder ovanför kortet */
+        /* Bilder nedanför kortet */
         .image-wrapper {
-            position: absolute;
-            top: -150px;
-            left: 50%;
-            transform: translateX(-50%);
+            margin-top: 20px;
             display: flex;
             gap: 10px;
             justify-content: center;
@@ -106,11 +103,11 @@
         @keyframes slide-in {
             0% {
                 opacity: 0;
-                transform: translateX(-50%) translateY(-50px);
+                transform: translateY(50px);
             }
             100% {
                 opacity: 1;
-                transform: translateX(-50%) translateY(0);
+                transform: translateY(0);
             }
         }
 
@@ -133,9 +130,6 @@
             .content {
                 margin-left: 0;
             }
-            .image-wrapper {
-                top: -120px;
-            }
             .image-wrapper img {
                 width: 80px;
                 height: 80px;
@@ -157,17 +151,16 @@
     <div class="content">
         <div id="info" class="section active">
             <div class="card">
-                <!-- Bilder som glider in -->
-                <div class="image-wrapper">
-                    <img src="bild1.jpg" alt="Bild 1">
-                    <img src="bild2.jpg" alt="Bild 2">
-                    <img src="bild3.jpg" alt="Bild 3">
-                </div>
-                <!-- Kortet med text -->
                 <h2>Detaljer</h2>
                 <p><strong>Datum:</strong> 28 juni 2025</p>
                 <p><strong>Plats:</strong> Kontorsvägen 8</p>
                 <p><strong>Klädkod:</strong> FÄRG. Svart är förbjudet.</p>
+            </div>
+            <!-- Bilder som glider in under kortet -->
+            <div class="image-wrapper">
+                <img src="bild1.jpg" alt="Bild 1">
+                <img src="bild2.jpg" alt="Bild 2">
+                <img src="bild3.jpg" alt="Bild 3">
             </div>
         </div>
 
