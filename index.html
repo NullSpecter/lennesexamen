@@ -16,19 +16,27 @@
         .sidebar a:hover { background-color: #FF69B4; }
         .content { margin-left: 220px; padding: 20px; }
         .card { background-color: white; margin: 20px auto; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); max-width: 500px; text-align: center; }
+        .image-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; justify-items: center; }
+        .image-wrapper img { width: 200px; height: 200px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
         .form-input { margin-bottom: 10px; width: 80%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
         .form-button { padding: 10px 20px; background-color: #FF69B4; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
         .form-button:hover { background-color: #FF1493; }
-        .countdown { font-size: 20px; color: #FF69B4; margin: 10px 0; }
+        .section { display: none; }
+        .section.active { display: block; }
+        @media (max-width: 768px) { .sidebar { width: 100%; height: auto; display: flex; justify-content: center; } .content { margin-left: 0; } }
     </style>
     <script>
         const endpoint = "https://script.google.com/macros/s/AKfycbzTCKkrytUIZAL7bPW4lLlqeVc9dqGupCLAxAfvokeEQjX_T-nXi4a6dcquC4dIIiVK/exec";
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
 
         function submitEmail(event) {
             event.preventDefault();
             const emailInput = document.getElementById("email");
             const email = emailInput.value;
-
             if (email) {
                 fetch(endpoint, {
                     method: "POST",
@@ -41,11 +49,9 @@
                     emailInput.value = "";
                 })
                 .catch(error => {
-                    console.error("Ett fel uppstod:", error);
+                    console.error(error);
                     alert("Något gick fel. Försök igen senare.");
                 });
-            } else {
-                alert("Fyll i din e-postadress.");
             }
         }
 
@@ -65,7 +71,7 @@
                 document.getElementById("osa-form").reset();
             })
             .catch(error => {
-                console.error("Ett fel uppstod:", error);
+                console.error(error);
                 alert("Något gick fel. Försök igen senare.");
             });
         }
@@ -82,35 +88,51 @@
     </div>
 
     <div class="content">
-        <!-- OSA Formulär -->
-        <div id="osa" class="section" style="display:none;">
-            <div class="card">
-                <h2>OSA</h2>
-                <form id="osa-form" onsubmit="submitOSA(event)">
-                    <input type="text" id="osa-name" name="name" placeholder="Ditt namn" class="form-input" required>
-                    <div>
-                        <label><input type="radio" name="osa-attendance" value="Ja" required> Jag kommer</label>
-                        <label><input type="radio" name="osa-attendance" value="Nej" required> Jag kommer inte</label>
-                    </div>
-                    <button type="submit" class="form-button">Skicka</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Påminnelse Formulär -->
         <div id="info" class="section active">
             <div class="card">
                 <h2>Detaljer</h2>
                 <p><strong>Datum:</strong> 28 juni 2025</p>
-                <p><strong>Plats:</strong> Kontorsvägen 8, Vad/Söderbärke</p>
+                <p><strong>Plats:</strong> Kontorsvägen 8</p>
                 <p><strong>Klädkod:</strong> FÄRG. Svart är förbjudet.</p>
             </div>
             <div class="card">
-                <h2>Mer detaljer om festen kommer om...</h2>
-                <p class="countdown" id="countdown">Laddar...</p>
-                <p>Vill du få en påminnelse när det finns mer information här?</p>
+                <h2>Vill du få en påminnelse?</h2>
                 <form onsubmit="submitEmail(event)">
-                    <input type="email" id="email" name="email" placeholder="Din e-postadress" class="form-input" required>
+                    <input type="email" id="email" class="form-input" placeholder="Din e-postadress" required>
+                    <button type="submit" class="form-button">Skicka</button>
+                </form>
+            </div>
+            <div class="image-wrapper">
+                <img src="bild1.jpg" alt="Bild 1">
+                <img src="bild2.jpg" alt="Bild 2">
+                <img src="bild3.jpg" alt="Bild 3">
+                <img src="bild4.jpg" alt="Bild 4">
+                <img src="bild5.jpg" alt="Bild 5">
+                <img src="bild6.jpg" alt="Bild 6">
+                <img src="bild7.jpg" alt="Bild 7">
+                <img src="bild8.jpg" alt="Bild 8">
+                <img src="bild9.jpg" alt="Bild 9">
+                <img src="bild10.jpg" alt="Bild 10">
+                <img src="bild11.jpg" alt="Bild 11">
+                <img src="bild12.jpg" alt="Bild 12">
+                <img src="bild13.jpg" alt="Bild 13">
+                <img src="bild14.jpg" alt="Bild 14">
+                <img src="bild15.jpg" alt="Bild 15">
+                <img src="bild16.jpg" alt="Bild 16">
+                <img src="bild17.jpg" alt="Bild 17">
+                <img src="bild18.jpg" alt="Bild 18">
+            </div>
+        </div>
+
+        <div id="osa" class="section">
+            <div class="card">
+                <h2>OSA</h2>
+                <form id="osa-form" onsubmit="submitOSA(event)">
+                    <input type="text" id="osa-name" class="form-input" placeholder="Ditt namn" required>
+                    <div>
+                        <label><input type="radio" name="osa-attendance" value="Ja" required> Jag kommer</label>
+                        <label><input type="radio" name="osa-attendance" value="Nej" required> Jag kommer inte</label>
+                    </div>
                     <button type="submit" class="form-button">Skicka</button>
                 </form>
             </div>
