@@ -172,7 +172,7 @@
             if (distance > 0) {
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const minutes = Math.floor((distance % (1000 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
                 document.getElementById("countdown").innerHTML = `
@@ -185,6 +185,37 @@
 
         // Uppdatera nedräkningen varje sekund
         setInterval(updateCountdown, 1000);
+
+        // URL till ditt Google Apps Script
+        const endpoint = "https://script.google.com/macros/s/AKfycbx7dyABAm12UCGAFgJDvnlX-T1Fsqa9NtwoGzXlpI_Iq2XeDQn7k6UYPIh8KYu9FbNCRg/exec";
+
+        // Funktion för att skicka e-postadress
+        function submitEmail(event) {
+            event.preventDefault();
+            const emailInput = document.getElementById("email");
+            const email = emailInput.value;
+
+            if (email) {
+                fetch(endpoint, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `email=${encodeURIComponent(email)}`,
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert("Tack! Din e-postadress har sparats.");
+                    emailInput.value = "";
+                })
+                .catch(error => {
+                    console.error("Ett fel uppstod:", error);
+                    alert("Något gick fel. Försök igen senare.");
+                });
+            } else {
+                alert("Fyll i din e-postadress.");
+            }
+        }
     </script>
 </head>
 <body>
@@ -212,7 +243,7 @@
                     <h2>Mer detaljer om festen kommer om...</h2>
                     <p class="countdown" id="countdown">Laddar...</p>
                     <p>Vill du få en påminnelse när det finns mer information här?</p>
-                    <form class="reminder-form">
+                    <form class="reminder-form" onsubmit="submitEmail(event)">
                         <input type="email" id="email" name="email" placeholder="Din e-postadress" required>
                         <button type="submit">Skicka</button>
                     </form>
