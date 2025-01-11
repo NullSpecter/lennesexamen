@@ -78,16 +78,14 @@
             color: #FF69B4;
             margin: 10px 0;
         }
-        .reminder-form input[type="email"],
-        .osa-form input[type="text"] {
+        .reminder-form input[type="email"] {
             padding: 10px;
             width: 80%;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
         }
-        .reminder-form button,
-        .osa-form button {
+        .reminder-form button {
             margin-top: 10px;
             padding: 10px 20px;
             background-color: #FF69B4;
@@ -97,8 +95,7 @@
             font-size: 16px;
             cursor: pointer;
         }
-        .reminder-form button:hover,
-        .osa-form button:hover {
+        .reminder-form button:hover {
             background-color: #FF1493;
         }
         .image-section {
@@ -163,43 +160,60 @@
                 height: 150px;
             }
         }
-        .section {
-            display: none;
-        }
-        .section.active {
-            display: block;
-        }
     </style>
     <script>
-        const endpoint = "https://script.google.com/macros/s/AKfycbx7dyABAm12UCGAFgJDvnlX-T1Fsqa9NtwoGzXlpI_Iq2XeDQn7k6UYPIh8KYu9FbNCRg/exec";
+        // Nedräkning till ett specifikt datum
+        const countdownDate = new Date("2025-06-15T00:00:00").getTime();
 
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML = 
+                    ${days} dagar ${hours} timmar ${minutes} minuter ${seconds} sekunder
+                ;
+            } else {
+                document.getElementById("countdown").innerHTML = "Mer information finns nu tillgänglig!";
+            }
         }
 
-        function submitOSA(event) {
-            event.preventDefault();
-            const name = document.getElementById("osa-name").value;
-            const attendance = document.querySelector('input[name="attendance"]:checked').value;
+        // Uppdatera nedräkningen varje sekund
+        setInterval(updateCountdown, 1000);
 
-            if (name && attendance) {
+        // URL till ditt Google Apps Script
+        const endpoint = "https://script.google.com/macros/s/AKfycbx7dyABAm12UCGAFgJDvnlX-T1Fsqa9NtwoGzXlpI_Iq2XeDQn7k6UYPIh8KYu9FbNCRg/exec";
+
+        // Funktion för att skicka e-postadress
+        function submitEmail(event) {
+            event.preventDefault();
+            const emailInput = document.getElementById("email");
+            const email = emailInput.value;
+
+            if (email) {
                 fetch(endpoint, {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `name=${encodeURIComponent(name)}&attendance=${encodeURIComponent(attendance)}`,
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: email=${encodeURIComponent(email)},
                 })
                 .then(response => response.text())
                 .then(data => {
-                    alert("Tack! Ditt svar har sparats.");
-                    document.getElementById("osa-form").reset();
+                    alert("Tack! Din e-postadress har sparats.");
+                    emailInput.value = "";
                 })
                 .catch(error => {
                     console.error("Ett fel uppstod:", error);
                     alert("Något gick fel. Försök igen senare.");
                 });
             } else {
-                alert("Fyll i alla fält.");
+                alert("Fyll i din e-postadress.");
             }
         }
     </script>
@@ -228,6 +242,11 @@
                 <div class="card">
                     <h2>Mer detaljer om festen kommer om...</h2>
                     <p class="countdown" id="countdown">Laddar...</p>
+                    <p>Vill du få en påminnelse när det finns mer information här?</p>
+                    <form class="reminder-form" onsubmit="submitEmail(event)">
+                        <input type="email" id="email" name="email" placeholder="Din e-postadress" required>
+                        <button type="submit">Skicka</button>
+                    </form>
                 </div>
             </div>
             <div class="image-section">
@@ -254,27 +273,7 @@
                 </div>
             </div>
         </div>
-
-        <div id="osa" class="section">
-            <div class="card">
-                <h2>OSA</h2>
-                <p>Fyll i om du kommer eller inte:</p>
-                <form id="osa-form" onsubmit="submitOSA(event)">
-                    <input type="text" id="osa-name" name="name" placeholder="Ditt namn" required>
-                    <div style="margin-top: 10px;">
-                        <label>
-                            <input type="radio" name="attendance" value="Ja" required>
-                            Jag kommer
-                        </label>
-                        <label>
-                            <input type="radio" name="attendance" value="Nej" required>
-                            Jag kommer inte
-                        </label>
-                    </div>
-                    <button type="submit">Skicka</button>
-                </form>
-            </div>
-        </div>
     </div>
 </body>
 </html>
+
