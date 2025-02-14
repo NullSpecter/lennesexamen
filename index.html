@@ -87,7 +87,7 @@
         }
     </style>
     <script>
-        const endpoint = "https://script.google.com/macros/s/AKfycbx7dyABAm12UCGAFgJDvnlX-T1Fsqa9NtwoGzXlpI_Iq2XeDQn7k6UYPIh8KYu9FbNCRg/exec";
+        const endpoint = "https://script.google.com/macros/s/AKfycbx-8oro3kK9W3bkgBXNrCzqUHCXXLeTlujC1RafAfU_6sqIqw8ukbIM2zEBtAD3IjfOfA/exec";
         function submitEmail(event) {
             event.preventDefault();
             const form = event.target;
@@ -164,7 +164,7 @@
                     <h2>Mer detaljer om festen kommer om...</h2>
                     <p class="countdown" id="countdown">Laddar...</p>
                     <p>Vill du få en påminnelse när det finns mer info om festen?</p>
-                    <form onsubmit="submitEmail(event)">
+                    <form onsubmit="submitOSA(event)">
                         <input type="email" id="reminder-email" name="email" placeholder="Din e-postadress" required>
                         <button type="submit">Skicka</button>
                     </form>
