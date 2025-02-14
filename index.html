@@ -87,6 +87,27 @@
         }
     </style>
     <script>
+        const endpoint = "https://script.google.com/macros/s/AKfycbx7dyABAm12UCGAFgJDvnlX-T1Fsqa9NtwoGzXlpI_Iq2XeDQn7k6UYPIh8KYu9FbNCRg/exec";
+        function submitEmail(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            fetch(endpoint, {
+                method: "POST",
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert("Tack! Ditt svar har sparats.");
+                form.reset();
+            })
+            .catch(error => {
+                console.error("Ett fel uppstod:", error);
+                alert("Något gick fel. Försök igen senare.");
+            });
+        }
+
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
@@ -171,9 +192,10 @@
         </div>
         <div id="osa" class="section">
             <h2>OSA</h2>
-            <p>Anmäl dig här genom att fylla i din e-post:</p>
+            <p>Anmäl dig här genom att fylla i ditt för- och efternamn:</p>
             <form onsubmit="submitEmail(event)">
-                <input type="email" id="email" name="email" placeholder="Din e-postadress" required>
+                <input type="text" id="firstname" name="firstname" placeholder="Förnamn" required>
+                <input type="text" id="lastname" name="lastname" placeholder="Efternamn" required>
                 <button type="submit">Skicka OSA</button>
             </form>
         </div>
