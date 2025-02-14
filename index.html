@@ -90,6 +90,12 @@
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
+    /* Enkel styling för laddningsindikatorn */
+    .loadingIndicator {
+      margin-top: 10px;
+      font-style: italic;
+      color: #666;
+    }
     
     /* Responsiv design för mobila enheter */
     @media (max-width: 768px) {
@@ -122,16 +128,29 @@
       const form = event.target;
       const formData = new FormData(form);
       
+      // Hitta laddningsindikatorn i formuläret och visa den
+      const loadingIndicator = form.querySelector('.loadingIndicator');
+      if (loadingIndicator) {
+        loadingIndicator.style.display = "block";
+        loadingIndicator.textContent = "Laddar...";
+      }
+      
       fetch(endpoint, {
         method: "POST",
         body: new URLSearchParams(formData)
       })
       .then(response => response.text())
       .then(data => {
+        if (loadingIndicator) {
+          loadingIndicator.style.display = "none";
+        }
         alert("Tack! Ditt svar har sparats.");
         form.reset();
       })
       .catch(error => {
+        if (loadingIndicator) {
+          loadingIndicator.style.display = "none";
+        }
         console.error("Ett fel uppstod:", error);
         alert("Något gick fel. Försök igen senare.");
       });
@@ -197,6 +216,7 @@
           <form onsubmit="submitEmail(event)">
             <input type="email" id="reminder-email" name="email" placeholder="Din e-postadress" required>
             <button type="submit">Skicka</button>
+            <div class="loadingIndicator" style="display:none;"></div>
           </form>
         </div>
       </div>
@@ -235,6 +255,7 @@
         <input type="text" id="firstname" name="firstname" placeholder="Förnamn" required>
         <input type="text" id="lastname" name="lastname" placeholder="Efternamn" required>
         <button type="submit">Skicka OSA</button>
+        <div class="loadingIndicator" style="display:none;"></div>
       </form>
     </div>
   </div>
