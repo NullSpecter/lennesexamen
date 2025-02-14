@@ -128,7 +128,7 @@
       const form = event.target;
       const formData = new FormData(form);
       
-      // Hitta laddningsindikatorn i formuläret och visa den
+      // Visa laddningsindikatorn
       const loadingIndicator = form.querySelector('.loadingIndicator');
       if (loadingIndicator) {
         loadingIndicator.style.display = "block";
@@ -214,6 +214,8 @@
           <p class="countdown" id="countdown">Laddar...</p>
           <p>Vill du få en påminnelse när det finns mer info om festen?</p>
           <form onsubmit="submitEmail(event)">
+            <!-- Dold input för att ange sheet -->
+            <input type="hidden" name="sheet" value="Påminnelser">
             <input type="email" id="reminder-email" name="email" placeholder="Din e-postadress" required>
             <button type="submit">Skicka</button>
             <div class="loadingIndicator" style="display:none;"></div>
@@ -252,6 +254,8 @@
       <h2>OSA</h2>
       <p>Anmäl dig här genom att fylla i ditt för- och efternamn:</p>
       <form onsubmit="submitEmail(event)">
+        <!-- Dold input för att ange sheet -->
+        <input type="hidden" name="sheet" value="OSA">
         <input type="text" id="firstname" name="firstname" placeholder="Förnamn" required>
         <input type="text" id="lastname" name="lastname" placeholder="Efternamn" required>
         <button type="submit">Skicka OSA</button>
