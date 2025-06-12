@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Examensfest 2025</title>
-  <link rel="icon" href="examenshatt.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="examenshatt.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -95,7 +95,7 @@
       animation-delay: 0.3s;
     }
     .fly-in-text:nth-of-type(2) {
-      animation-delay: 1s;
+      animation-delay: 1.3s;
     }
     @keyframes flyIn {
       to {
@@ -140,6 +140,15 @@
       color: #666;
       display: none;
     }
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
     @media (max-width: 768px) {
       .sidebar {
         position: static;
@@ -166,13 +175,163 @@
         max-width: 350px;
       }
     }
-    .confetti {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-  }
-</style>
+  </style>
+  <script>
+    const endpoint = "https://script.google.com/macros/s/AKfycbyEC-kacOdhtKeTYEv_UhkJmqVQWqZncsfQjxv1oSzOGPdYBNprHN3Yz9xCAMEJ7SnUCQ/exec";
+
+    function submitEmail(event) {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+      let loadingIndicator = form.querySelector('.loadingIndicator');
+      if (!loadingIndicator) {
+        loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'loadingIndicator';
+        loadingIndicator.textContent = 'Laddar...';
+        form.appendChild(loadingIndicator);
+      } else {
+        loadingIndicator.style.display = 'block';
+        loadingIndicator.textContent = 'Laddar...';
+      }
+      fetch(endpoint, {
+        method: "POST",
+        body: new URLSearchParams(formData)
+      })
+      .then(response => response.text())
+      .then(data => {
+        loadingIndicator.style.display = "none";
+        alert("Tack! Ditt svar har sparats.");
+        form.reset();
+      })
+      .catch(error => {
+        loadingIndicator.style.display = "none";
+        console.error("Ett fel uppstod:", error);
+        alert("Något gick fel. Försök igen senare.");
+      });
+    }
+
+    function showSection(sectionId) {
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      showSection('info');
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+      loadConfettiScript();
+    });
+
+    function updateCountdown() {
+      const teaserSection = document.getElementById("teaser-section");
+      teaserSection.style.display = "block";
+      const teaserWrapper = teaserSection.querySelector(".image-wrapper");
+      teaserWrapper.classList.add("fade-in");
+      launchConfetti();
+    }
+
+    function loadConfettiScript() {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';
+      script.onload = () => {
+        console.log('Confetti script loaded.');
+      };
+      document.body.appendChild(script);
+    }
+
+    function launchConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>LENNES EXAMENSFEST</h1>
+  </header>
+
+  <div class="sidebar">
+    <a href="#" onclick="showSection('info')">Mer information</a>
+    <a href="#" onclick="showSection('guestlist')">Gästlista</a>
+    <a href="#" onclick="showSection('osa')">OSA</a>
+  </div>
+
+  <div class="content">
+    <div id="info" class="section active">
+      <div class="info-container">
+        <div class="card">
+          <h2>Mer information</h2>
+          <p><strong>Datum:</strong> 28 juni 2025</p>
+          <p><strong>Plats:</strong> Kontorsvägen 8, Vad/Söderbärke</p>
+          <p><strong>Tid:</strong> 15:00</p>
+          <p><strong>Klädkod:</strong> FÄRG. Svart är förbjudet.</p>
+        </div>
+        <div class="card fun-card">
+          <h2>🎉 Är ni taggade?!?!! 🎉</h2>
+          <form onsubmit="submitEmail(event)">
+            <input type="hidden" name="sheet" value="Taggade" />
+            <label>
+              <input type="radio" name="taggad" value="Ja" required /> Ja
+            </label><br />
+            <label>
+              <input type="radio" name="taggad" value="JA!!!!" /> JA!!!!
+            </label><br />
+            <button type="submit" style="margin-top: 10px;">Skicka svar</button>
+            <div class="loadingIndicator"></div>
+          </form>
+        </div>
+      </div>
+
+      <div class="image-section" id="teaser-section" style="display: none;">
+        <h2>Festen närmar sig...</h2>
+        <div class="image-wrapper">
+          <img src="teaser2.jpg" alt="Teaser 2" />
+          <img src="teaser3.jpg" alt="Teaser 3" />
+          <img src="teaser4.jpg" alt="Teaser 4" />
+          <img src="teaser5.jpg" alt="Teaser 5" />
+          <img src="teaser6.jpg" alt="Teaser 6" />
+        </div>
+      </div>
+
+      <div class="image-section">
+        <p class="fly-in-text">Kommer Lenne verkligen ta examen eller vad har hon ens gjort under studietiden?</p>
+        <p class="fly-in-text">YES, SHE DID IT!!!! Här kommer lite bevis:</p>
+        <div class="image-wrapper fade-in">
+          <img src="bild1.jpg" alt="Bild 1" />
+          <img src="bild2.jpg" alt="Bild 2" />
+          <img src="bild3.jpg" alt="Bild 3" />
+          <img src="bild4.jpg" alt="Bild 4" />
+          <img src="bild5.jpg" alt="Bild 5" />
+          <img src="bild6.jpg" alt="Bild 6" />
+        </div>
+      </div>
+    </div>
+
+    <div id="guestlist" class="section">
+      <h2>Gästlista</h2>
+      <p>Snart presenterar vi gästlistan – en lista så exklusiv att den knappt kan tro på sin egen existens. Håll ögonen öppna!</p>
+    </div>
+
+    <div id="osa" class="section">
+      <h2>OSA</h2>
+      <p>Anmäl dig här med ditt fullständiga namn och säkra din plats på LENNES EXAMENSFEST – tro mig, INGEN vill missa denna dag!</p>
+      <form onsubmit="submitEmail(event)">
+        <input type="hidden" name="sheet" value="OSA" />
+        <input type="text" id="firstname" name="firstname" placeholder="Förnamn" required />
+        <input type="text" id="lastname" name="lastname" placeholder="Efternamn" required />
+        <button type="submit">Skicka OSA</button>
+        <div class="loadingIndicator"></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="confetti" id="confetti"></div>
+</body>
+</html>
