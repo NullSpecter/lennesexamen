@@ -249,6 +249,9 @@
       const interval = setInterval(() => {
         if (Date.now() > animationEnd) {
           clearInterval(interval);
+          if (typeof confetti.reset === 'function') {
+            confetti.reset();
+          }
           return;
         }
         confetti({
