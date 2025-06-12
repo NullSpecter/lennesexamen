@@ -54,8 +54,8 @@
     }
     .info-container {
       display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
+      flex-direction: row;
+      align-items: flex-start;
       gap: 20px;
     }
     .card {
@@ -63,11 +63,21 @@
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      flex: 1;
-      min-width: 300px;
+      width: 300px;
       text-align: center;
     }
+    .fun-card {
+      background-color: #ffe0f0;
+      border: 2px dashed #ff69b4;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
     .image-section {
+      width: 100%;
       margin-top: 20px;
       text-align: center;
     }
@@ -75,29 +85,61 @@
       font-size: 18px;
       color: #FF69B4;
       margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: flyIn 1s ease forwards;
+      display: block;
+    }
+    .fly-in-text:first-of-type {
+      margin-bottom: 10px; /* extra spacing */
+      animation-delay: 0.3s;
+    }
+    .fly-in-text:nth-of-type(2) {
+      animation-delay: 1s;
+    }
+    @keyframes flyIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     .image-wrapper {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 25px;
       justify-items: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .image-wrapper.fade-in {
+      opacity: 1;
+      transform: translateY(0);
     }
     .image-wrapper img {
+      opacity: 0;
+      transform: scale(0.8);
       width: 100%;
       max-width: 200px;
       height: 200px;
       object-fit: cover;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: opacity 0.8s ease, transform 0.8s ease;
     }
-    /* Enkel styling för laddningsindikatorn */
+    .image-wrapper.fade-in img {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .image-wrapper img:hover {
+      transform: scale(1.05);
+    }
     .loadingIndicator {
       margin-top: 10px;
       font-style: italic;
       color: #666;
+      display: none;
     }
-    
-    /* Responsiv design för mobila enheter */
     @media (max-width: 768px) {
       .sidebar {
         position: static;
@@ -115,160 +157,22 @@
       header h1 {
         font-size: 28px;
       }
-      /* Centrera korten och ge dem en mindre maximal bredd */
       .info-container {
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
       }
       .card {
-        /* Vi låter korten vara centrerade med en maxbredd */
-        min-width: 100%;
+        width: 100%;
         max-width: 350px;
-        margin: 0 auto;
       }
     }
-  </style>
-  <script>
-    const endpoint = "https://script.google.com/macros/s/AKfycbyEC-kacOdhtKeTYEv_UhkJmqVQWqZncsfQjxv1oSzOGPdYBNprHN3Yz9xCAMEJ7SnUCQ/exec";
-    
-    function submitEmail(event) {
-      event.preventDefault();
-      const form = event.target;
-      const formData = new FormData(form);
-      
-      // Visa laddningsindikatorn
-      const loadingIndicator = form.querySelector('.loadingIndicator');
-      if (loadingIndicator) {
-        loadingIndicator.style.display = "block";
-        loadingIndicator.textContent = "Laddar...";
-      }
-      
-      fetch(endpoint, {
-        method: "POST",
-        body: new URLSearchParams(formData)
-      })
-      .then(response => response.text())
-      .then(data => {
-        if (loadingIndicator) {
-          loadingIndicator.style.display = "none";
-        }
-        alert("Tack! Ditt svar har sparats.");
-        form.reset();
-      })
-      .catch(error => {
-        if (loadingIndicator) {
-          loadingIndicator.style.display = "none";
-        }
-        console.error("Ett fel uppstod:", error);
-        alert("Något gick fel. Försök igen senare.");
-      });
-    }
-    
-    function showSection(sectionId) {
-      document.querySelectorAll('.section').forEach(section => {
-        section.classList.remove('active');
-      });
-      document.getElementById(sectionId).classList.add('active');
-    }
-    
-    document.addEventListener("DOMContentLoaded", function() {
-      showSection('info');
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-    });
-    
-    function updateCountdown() {
-      const countdownDate = new Date("2025-05-20T00:00:00").getTime();
-      const now = new Date().getTime();
-      const distance = countdownDate - now;
-      
-      if (distance > 0) {
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-        document.getElementById("countdown").innerHTML = 
-          `${days} dagar ${hours} timmar ${minutes} minuter ${seconds} sekunder`;
-      } else {
-        document.getElementById("countdown").innerHTML = "Mer information finns nu tillgänglig!";
-      }
-    }
-  </script>
-</head>
-<body>
-  <header>
-    <h1>LENNES EXAMENSFEST</h1>
-  </header>
-
-  <div class="sidebar">
-    <a href="#" onclick="showSection('info')">Mer information</a>
-    <a href="#" onclick="showSection('guestlist')">Gästlista</a>
-    <a href="#" onclick="showSection('osa')">OSA</a>
-  </div>
-
-  <div class="content">
-    <div id="info" class="section active">
-      <div class="info-container">
-        <div class="card">
-          <h2>Mer information</h2>
-          <p><strong>Datum:</strong> 28 juni 2025</p>
-          <p><strong>Plats:</strong> Kontorsvägen 8, Vad/Söderbärke</p>
-          <p><strong>Tid:</strong> 15:00</p>
-          <p><strong>Klädkod:</strong> FÄRG. Svart är förbjudet.</p>
-        </div>
-        <div class="card">
-          <h2>Mer detaljer om festen kommer om...</h2>
-          <p class="countdown" id="countdown">Laddar...</p>
-          <p>Vill du få en påminnelse när det finns mer info om festen?</p>
-          <form onsubmit="submitEmail(event)">
-            <!-- Dold input för att ange sheet -->
-            <input type="hidden" name="sheet" value="Påminnelser">
-            <input type="email" id="reminder-email" name="email" placeholder="Din e-postadress" required>
-            <button type="submit">Skicka</button>
-            <div class="loadingIndicator" style="display:none;"></div>
-          </form>
-        </div>
-      </div>
-      <div class="image-section">
-        <p class="fly-in-text">Kommer Lenne verkligen ta examen eller vad har hon ens gjort under studietiden?</p>
-        <div class="image-wrapper">
-          <img src="bild1.jpg" alt="Bild 1">
-          <img src="bild2.jpg" alt="Bild 2">
-          <img src="bild3.jpg" alt="Bild 3">
-          <img src="bild4.jpg" alt="Bild 4">
-          <img src="bild5.jpg" alt="Bild 5">
-          <img src="bild6.jpg" alt="Bild 6">
-          <img src="bild7.jpg" alt="Bild 7">
-          <img src="bild8.jpg" alt="Bild 8">
-          <img src="bild9.jpg" alt="Bild 9">
-          <img src="bild10.jpg" alt="Bild 10">
-          <img src="bild11.jpg" alt="Bild 11">
-          <img src="bild12.JPG" alt="Bild 12">
-          <img src="bild13.jpg" alt="Bild 13">
-          <img src="bild14.JPG" alt="Bild 14">
-          <img src="bild15.JPG" alt="Bild 15">
-          <img src="bild16.jpg" alt="Bild 16">
-          <img src="bild17.jpg" alt="Bild 17">
-          <img src="bild18.jpg" alt="Bild 18">
-        </div>
-      </div>
-    </div>
-    <div id="guestlist" class="section">
-      <h2>Gästlista</h2>
-      <p>Snart presenterar vi gästlistan – en lista så exklusiv att den knappt kan tro på sin egen existens. Håll ögonen öppna!</p>
-    </div>
-    <div id="osa" class="section">
-      <h2>OSA</h2>
-      <p>Anmäl dig här med ditt fullständiga namn och säkra din plats på LENNES EXAMENSFEST – tro mig, INGEN vill missa denna dag!</p>
-      <form onsubmit="submitEmail(event)">
-        <!-- Dold input för att ange sheet -->
-        <input type="hidden" name="sheet" value="OSA">
-        <input type="text" id="firstname" name="firstname" placeholder="Förnamn" required>
-        <input type="text" id="lastname" name="lastname" placeholder="Efternamn" required>
-        <button type="submit">Skicka OSA</button>
-        <div class="loadingIndicator" style="display:none;"></div>
-      </form>
-    </div>
-  </div>
-</body>
-</html>
+    .confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+  }
+</style>
