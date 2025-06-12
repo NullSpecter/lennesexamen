@@ -242,13 +242,21 @@
     }
 
     function launchConfetti() {
-      if (typeof confetti === 'function') {
+      if (typeof confetti !== 'function') return;
+
+      const duration = 5000;
+      const animationEnd = Date.now() + duration;
+      const interval = setInterval(() => {
+        if (Date.now() > animationEnd) {
+          clearInterval(interval);
+          return;
+        }
         confetti({
-          particleCount: 100,
-          spread: 70,
+          particleCount: 30,
+          spread: 60,
           origin: { y: 0.6 }
         });
-      }
+      }, 250);
     }
   </script>
 </head>
