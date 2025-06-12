@@ -91,7 +91,7 @@
       display: block;
     }
     .fly-in-text:first-of-type {
-      margin-bottom: 10px; /* extra spacing */
+      margin-bottom: 10px;
       animation-delay: 0.3s;
     }
     .fly-in-text:nth-of-type(2) {
@@ -222,7 +222,6 @@
       showSection('info');
       updateCountdown();
       setInterval(updateCountdown, 1000);
-      // Skapa och starta konfetti
       createConfettiCanvas();
     });
 
@@ -236,7 +235,6 @@
 
     let confettiInstance = null;
     let confettiCanvas = null;
-    let confettiTimeout = null;
 
     function createConfettiCanvas() {
       confettiCanvas = document.createElement('canvas');
@@ -249,16 +247,15 @@
       if (!confettiInstance) return;
 
       // Stoppa tidigare om den kör
-      if (confettiTimeout) {
-        clearTimeout(confettiTimeout);
-        confettiTimeout = null;
+      if (window.confettiTimeout) {
+        clearTimeout(window.confettiTimeout);
       }
 
-      let endTime = Date.now() + 5000; // 5 sekunder
+      let endTime = Date.now() + 3000; // 3 sekunder
 
       function frame() {
         if (Date.now() > endTime) {
-          // Stoppa konfetti
+          // Ta bort canvas så konfettin slutar helt
           if (confettiCanvas && confettiCanvas.parentNode) {
             confettiCanvas.parentNode.removeChild(confettiCanvas);
             confettiCanvas = null;
@@ -267,13 +264,22 @@
           return;
         }
         confettiInstance({
-          particleCount: 30,
-          spread: 60,
+          particleCount: 10,
+          spread: 30,
           origin: { y: 0.6 }
         });
         requestAnimationFrame(frame);
       }
       frame();
+
+      // Säkerställ att vi stoppar efter 3 sekunder (backup)
+      window.confettiTimeout = setTimeout(() => {
+        if (confettiCanvas && confettiCanvas.parentNode) {
+          confettiCanvas.parentNode.removeChild(confettiCanvas);
+          confettiCanvas = null;
+          confettiInstance = null;
+        }
+      }, 3500);
     }
   </script>
 </head>
