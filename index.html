@@ -241,14 +241,22 @@
       document.body.appendChild(script);
     }
 
+    let confettiInterval = null;
+
     function launchConfetti() {
       if (typeof confetti !== 'function') return;
 
       const duration = 5000;
       const animationEnd = Date.now() + duration;
-      const interval = setInterval(() => {
+
+      if (confettiInterval) {
+        clearInterval(confettiInterval);
+      }
+
+      confettiInterval = setInterval(() => {
         if (Date.now() > animationEnd) {
-          clearInterval(interval);
+          clearInterval(confettiInterval);
+          confettiInterval = null;
           if (typeof confetti.reset === 'function') {
             confetti.reset();
           }
