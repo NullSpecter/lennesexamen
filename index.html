@@ -140,13 +140,13 @@
       color: #666;
       display: none;
     }
-    .confetti {
+    .confetti-canvas {
       position: fixed;
+      pointer-events: none;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+      width: 100vw;
+      height: 100vh;
       z-index: 9999;
     }
     @media (max-width: 768px) {
@@ -176,6 +176,7 @@
       }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
     const endpoint = "https://script.google.com/macros/s/AKfycbyEC-kacOdhtKeTYEv_UhkJmqVQWqZncsfQjxv1oSzOGPdYBNprHN3Yz9xCAMEJ7SnUCQ/exec";
 
@@ -217,11 +218,12 @@
       document.getElementById(sectionId).classList.add('active');
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", () => {
       showSection('info');
       updateCountdown();
       setInterval(updateCountdown, 1000);
-      loadConfettiScript();
+      // Skapa och starta konfetti
+      createConfettiCanvas();
     });
 
     function updateCountdown() {
@@ -232,42 +234,46 @@
       launchConfetti();
     }
 
-    function loadConfettiScript() {
-      const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';
-      script.onload = () => {
-        console.log('Confetti script loaded.');
-      };
-      document.body.appendChild(script);
+    let confettiInstance = null;
+    let confettiCanvas = null;
+    let confettiTimeout = null;
+
+    function createConfettiCanvas() {
+      confettiCanvas = document.createElement('canvas');
+      confettiCanvas.className = 'confetti-canvas';
+      document.body.appendChild(confettiCanvas);
+      confettiInstance = confetti.create(confettiCanvas, { resize: true });
     }
 
-    let confettiInterval = null;
-
     function launchConfetti() {
-      if (typeof confetti !== 'function') return;
+      if (!confettiInstance) return;
 
-      const duration = 5000;
-      const animationEnd = Date.now() + duration;
-
-      if (confettiInterval) {
-        clearInterval(confettiInterval);
+      // Stoppa tidigare om den kör
+      if (confettiTimeout) {
+        clearTimeout(confettiTimeout);
+        confettiTimeout = null;
       }
 
-      confettiInterval = setInterval(() => {
-        if (Date.now() > animationEnd) {
-          clearInterval(confettiInterval);
-          confettiInterval = null;
-          if (typeof confetti.reset === 'function') {
-            confetti.reset();
+      let endTime = Date.now() + 5000; // 5 sekunder
+
+      function frame() {
+        if (Date.now() > endTime) {
+          // Stoppa konfetti
+          if (confettiCanvas && confettiCanvas.parentNode) {
+            confettiCanvas.parentNode.removeChild(confettiCanvas);
+            confettiCanvas = null;
+            confettiInstance = null;
           }
           return;
         }
-        confetti({
+        confettiInstance({
           particleCount: 30,
           spread: 60,
           origin: { y: 0.6 }
         });
-      }, 250);
+        requestAnimationFrame(frame);
+      }
+      frame();
     }
   </script>
 </head>
@@ -350,7 +356,5 @@
       </form>
     </div>
   </div>
-
-  <div class="confetti" id="confetti"></div>
 </body>
 </html>
