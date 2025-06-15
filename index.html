@@ -58,11 +58,11 @@
       align-items: flex-start;
       gap: 20px;
     }
-    .card {
+    .card, .countdown-card {
       background-color: white;
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       width: 300px;
       text-align: center;
     }
@@ -75,6 +75,25 @@
       0% { transform: scale(1); }
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
+    }
+    .countdown-number {
+      font-size: 72px;
+      font-weight: 700;
+      color: #FF69B4;
+      margin: 10px 0 0 0;
+      letter-spacing: 4px;
+    }
+    .countdown-text {
+      font-size: 22px;
+      font-weight: 600;
+      color: #333;
+      margin-top: 5px;
+    }
+    .loadingIndicator {
+      margin-top: 10px;
+      font-style: italic;
+      color: #666;
+      display: none;
     }
     .image-section {
       width: 100%;
@@ -134,21 +153,6 @@
     .image-wrapper img:hover {
       transform: scale(1.05);
     }
-    .loadingIndicator {
-      margin-top: 10px;
-      font-style: italic;
-      color: #666;
-      display: none;
-    }
-    .confetti-canvas {
-      position: fixed;
-      pointer-events: none;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 9999;
-    }
     @media (max-width: 768px) {
       .sidebar {
         position: static;
@@ -170,13 +174,12 @@
         flex-direction: column;
         align-items: center;
       }
-      .card {
+      .card, .countdown-card {
         width: 100%;
         max-width: 350px;
       }
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
     const endpoint = "https://script.google.com/macros/s/AKfycbyEC-kacOdhtKeTYEv_UhkJmqVQWqZncsfQjxv1oSzOGPdYBNprHN3Yz9xCAMEJ7SnUCQ/exec";
 
@@ -218,69 +221,38 @@
       document.getElementById(sectionId).classList.add('active');
     }
 
+    function updateCountdown() {
+      const countdownNumber = document.getElementById('countdown-number');
+      const countdownText = document.getElementById('countdown-text');
+      const festDate = new Date('2025-06-28T00:00:00');
+      const now = new Date();
+      const diff = festDate - now;
+      if (diff <= 0) {
+        countdownNumber.textContent = '0';
+        countdownText.textContent = 'IDAG ÄR DET DAGS! 🎉';
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      if (days > 6) {
+        countdownNumber.textContent = days;
+        countdownText.textContent = `${days} ANTAL DAGAR KVAR!!`;
+      } else if (days <= 6 && days > 1) {
+        countdownNumber.textContent = days;
+        countdownText.textContent = `Festen närmar sig! ${days} dagar kvar`;
+      } else if (days === 1) {
+        countdownNumber.textContent = days;
+        countdownText.textContent = `IMORGON SMÄLLER DET!`;
+      } else {
+        countdownNumber.textContent = 0;
+        countdownText.textContent = `IDAG ÄR DET DAGS! 🎉`;
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       showSection('info');
       updateCountdown();
       setInterval(updateCountdown, 1000);
-      createConfettiCanvas();
     });
-
-    function updateCountdown() {
-      const teaserSection = document.getElementById("teaser-section");
-      teaserSection.style.display = "block";
-      const teaserWrapper = teaserSection.querySelector(".image-wrapper");
-      teaserWrapper.classList.add("fade-in");
-      launchConfetti();
-    }
-
-    let confettiInstance = null;
-    let confettiCanvas = null;
-
-    function createConfettiCanvas() {
-      confettiCanvas = document.createElement('canvas');
-      confettiCanvas.className = 'confetti-canvas';
-      document.body.appendChild(confettiCanvas);
-      confettiInstance = confetti.create(confettiCanvas, { resize: true });
-    }
-
-    function launchConfetti() {
-      if (!confettiInstance) return;
-
-      // Stoppa tidigare om den kör
-      if (window.confettiTimeout) {
-        clearTimeout(window.confettiTimeout);
-      }
-
-      let endTime = Date.now() + 3000; // 3 sekunder
-
-      function frame() {
-        if (Date.now() > endTime) {
-          // Ta bort canvas så konfettin slutar helt
-          if (confettiCanvas && confettiCanvas.parentNode) {
-            confettiCanvas.parentNode.removeChild(confettiCanvas);
-            confettiCanvas = null;
-            confettiInstance = null;
-          }
-          return;
-        }
-        confettiInstance({
-          particleCount: 10,
-          spread: 30,
-          origin: { y: 0.6 }
-        });
-        requestAnimationFrame(frame);
-      }
-      frame();
-
-      // Säkerställ att vi stoppar efter 3 sekunder (backup)
-      window.confettiTimeout = setTimeout(() => {
-        if (confettiCanvas && confettiCanvas.parentNode) {
-          confettiCanvas.parentNode.removeChild(confettiCanvas);
-          confettiCanvas = null;
-          confettiInstance = null;
-        }
-      }, 3500);
-    }
   </script>
 </head>
 <body>
@@ -297,13 +269,6 @@
   <div class="content">
     <div id="info" class="section active">
       <div class="info-container">
-        <div class="card">
-          <h2>Mer information</h2>
-          <p><strong>Datum:</strong> 28 juni 2025</p>
-          <p><strong>Plats:</strong> Kontorsvägen 8, Vad/Söderbärke</p>
-          <p><strong>Tid:</strong> 15:00</p>
-          <p><strong>Klädkod:</strong> FÄRG. Svart är förbjudet.</p>
-        </div>
         <div class="card fun-card">
           <h2>🎉 Är ni taggade?!?!! 🎉</h2>
           <form onsubmit="submitEmail(event)">
@@ -317,6 +282,11 @@
             <button type="submit" style="margin-top: 10px;">Skicka svar</button>
             <div class="loadingIndicator"></div>
           </form>
+        </div>
+
+        <div class="countdown-card">
+          <div id="countdown-number" class="countdown-number">0</div>
+          <div id="countdown-text" class="countdown-text">Laddar...</div>
         </div>
       </div>
 
