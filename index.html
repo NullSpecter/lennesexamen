@@ -252,6 +252,12 @@
       showSection('info');
       updateCountdown();
       setInterval(updateCountdown, 1000);
+
+      // Visa teaserbilder med fade-in
+      const teaserWrapper = document.querySelector("#teaser-section .image-wrapper");
+      if(teaserWrapper) {
+        teaserWrapper.classList.add("fade-in");
+      }
     });
   </script>
 </head>
@@ -290,7 +296,7 @@
         </div>
       </div>
 
-      <div class="image-section" id="teaser-section" style="display: none;">
+      <div class="image-section" id="teaser-section">
         <h2>Festen närmar sig...</h2>
         <div class="image-wrapper">
           <img src="teaser1.jpg" alt="Teaser 1" />
