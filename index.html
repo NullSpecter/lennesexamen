@@ -57,14 +57,17 @@
       flex-direction: row;
       align-items: flex-start;
       gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     .card, .countdown-card {
       background-color: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      width: 300px;
+      width: 280px;
       text-align: center;
+      box-sizing: border-box;
     }
     .fun-card {
       background-color: #ffe0f0;
@@ -275,6 +278,14 @@
   <div class="content">
     <div id="info" class="section active">
       <div class="info-container">
+        <div class="card">
+          <h2>Mer information</h2>
+          <p><strong>Datum:</strong> 28 juni 2025</p>
+          <p><strong>Plats:</strong> Kontorsvägen 8, Vad/Söderbärke</p>
+          <p><strong>Tid:</strong> 15:00</p>
+          <p><strong>Klädkod:</strong> FÄRG. Svart är förbjudet.</p>
+        </div>
+
         <div class="card fun-card">
           <h2>🎉 Är ni taggade?!?!! 🎉</h2>
           <form onsubmit="submitEmail(event)">
