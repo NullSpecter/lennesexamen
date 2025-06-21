@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Examensfest 2025</title>
   <link rel="icon" href="examenshatt.png" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@400;600&family=Dancing+Script&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -156,201 +156,95 @@
     .image-wrapper img:hover {
       transform: scale(1.05);
     }
-    @media (max-width: 768px) {
-      .sidebar {
-        position: static;
-        width: 100%;
-        height: auto;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        padding: 10px 0;
-      }
-      .content {
-        margin-left: 0;
-        padding: 10px;
-      }
-      header h1 {
-        font-size: 28px;
-      }
-      .info-container {
-        flex-direction: column;
-        align-items: center;
-      }
-      .card, .countdown-card {
-        width: 100%;
-        max-width: 350px;
+    .guestlist-box {
+      background-color: #ffe4f0;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .guestlist-names {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .guestlist-names li {
+      font-family: 'Dancing Script', cursive;
+      font-size: 26px;
+      margin: 10px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: flyInName 0.6s ease forwards;
+    }
+    .guestlist-names li:nth-child(1) { animation-delay: 0.1s; }
+    .guestlist-names li:nth-child(2) { animation-delay: 0.2s; }
+    .guestlist-names li:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes flyInName {
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
   </style>
-  <script>
-    const endpoint = "https://script.google.com/macros/s/AKfycbyEC-kacOdhtKeTYEv_UhkJmqVQWqZncsfQjxv1oSzOGPdYBNprHN3Yz9xCAMEJ7SnUCQ/exec";
-
-    function submitEmail(event) {
-      event.preventDefault();
-      const form = event.target;
-      const formData = new FormData(form);
-      let loadingIndicator = form.querySelector('.loadingIndicator');
-      if (!loadingIndicator) {
-        loadingIndicator = document.createElement('div');
-        loadingIndicator.className = 'loadingIndicator';
-        loadingIndicator.textContent = 'Laddar...';
-        form.appendChild(loadingIndicator);
-      } else {
-        loadingIndicator.style.display = 'block';
-        loadingIndicator.textContent = 'Laddar...';
-      }
-      fetch(endpoint, {
-        method: "POST",
-        body: new URLSearchParams(formData)
-      })
-      .then(response => response.text())
-      .then(data => {
-        loadingIndicator.style.display = "none";
-        alert("Tack! Ditt svar har sparats.");
-        form.reset();
-      })
-      .catch(error => {
-        loadingIndicator.style.display = "none";
-        console.error("Ett fel uppstod:", error);
-        alert("Något gick fel. Försök igen senare.");
-      });
-    }
-
-    function showSection(sectionId) {
-      document.querySelectorAll('.section').forEach(section => {
-        section.classList.remove('active');
-      });
-      document.getElementById(sectionId).classList.add('active');
-    }
-
-    function updateCountdown() {
-      const countdownNumber = document.getElementById('countdown-number');
-      const countdownText = document.getElementById('countdown-text');
-      const festDate = new Date('2025-06-28T00:00:00');
-      const now = new Date();
-      const diff = festDate - now;
-      if (diff <= 0) {
-        countdownNumber.textContent = '0';
-        countdownText.textContent = 'IDAG ÄR DET DAGS! 🎉';
-        return;
-      }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      if (days > 6) {
-        countdownNumber.textContent = days;
-        countdownText.textContent = `${days} ANTAL DAGAR KVAR!!`;
-      } else if (days <= 6 && days > 1) {
-        countdownNumber.textContent = days;
-        countdownText.textContent = `Festen närmar sig! ${days} dagar kvar`;
-      } else if (days === 1) {
-        countdownNumber.textContent = days;
-        countdownText.textContent = `IMORGON SMÄLLER DET!`;
-      } else {
-        countdownNumber.textContent = 0;
-        countdownText.textContent = `IDAG ÄR DET DAGS! 🎉`;
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      showSection('info');
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-
-      // Visa teaserbilder med fade-in
-      const teaserWrapper = document.querySelector("#teaser-section .image-wrapper");
-      if(teaserWrapper) {
-        teaserWrapper.classList.add("fade-in");
-      }
-    });
-  </script>
 </head>
 <body>
-  <header>
-    <h1>LENNES EXAMENSFEST</h1>
-  </header>
-
-  <div class="sidebar">
-    <a href="#" onclick="showSection('info')">Mer information</a>
-    <a href="#" onclick="showSection('guestlist')">Gästlista</a>
-    <a href="#" onclick="showSection('osa')">OSA</a>
-  </div>
-
-  <div class="content">
-    <div id="info" class="section active">
-      <div class="info-container">
-        <div class="card">
-          <h2>Mer information</h2>
-          <p><strong>Datum:</strong> 28 juni 2025</p>
-          <p><strong>Plats:</strong> Kontorsvägen 8, Vad/Söderbärke</p>
-          <p><strong>Tid:</strong> 15:00</p>
-          <p><strong>Klädkod:</strong> FÄRG. Svart är förbjudet.</p>
-        </div>
-
-        <div class="card fun-card">
-          <h2>🎉 Är ni taggade?!?!! 🎉</h2>
-          <form onsubmit="submitEmail(event)">
-            <input type="hidden" name="sheet" value="Taggade" />
-            <label>
-              <input type="radio" name="taggad" value="Ja" required /> Ja
-            </label><br />
-            <label>
-              <input type="radio" name="taggad" value="JA!!!!" /> JA!!!!
-            </label><br />
-            <button type="submit" style="margin-top: 10px;">Skicka svar</button>
-            <div class="loadingIndicator"></div>
-          </form>
-        </div>
-
-        <div class="countdown-card">
-          <div id="countdown-number" class="countdown-number">0</div>
-          <div id="countdown-text" class="countdown-text">Laddar...</div>
-        </div>
+  <div id="info" class="section active">
+    <div class="info-container">
+      <div class="card">
+        <h2>Mer information</h2>
+        <p><strong>Datum:</strong> 28 juni 2025</p>
+        <p><strong>Plats:</strong> Kontorsvägen 8, Vad/Söderbärke</p>
+        <p><strong>Tid:</strong> 15:00</p>
+        <p><strong>Klädkod:</strong> FÄRG. Svart är förbjudet.</p>
       </div>
-
-      <div class="image-section" id="teaser-section">
-        <h2>Festen närmar sig...</h2>
-        <div class="image-wrapper">
-          <img src="teaser1.jpg" alt="Teaser 1" />
-          <img src="teaser2.jpg" alt="Teaser 2" />
-          <img src="teaser3.jpg" alt="Teaser 3" />
-          <img src="teaser4.jpg" alt="Teaser 4" />
-          <img src="teaser5.jpg" alt="Teaser 5" />
-          <img src="teaser6.jpg" alt="Teaser 6" />
-          <img src="teaser7.jpg" alt="Teaser 7" />
-          <img src="teaser8.jpg" alt="Teaser 8" />
-        </div>
+      <div class="card fun-card">
+        <h2>🎉 Är ni taggade?!?!! 🎉</h2>
+        <form onsubmit="submitEmail(event)">
+          <input type="hidden" name="sheet" value="Taggade" />
+          <label><input type="radio" name="taggad" value="Ja" required /> Ja</label><br />
+          <label><input type="radio" name="taggad" value="JA!!!!" /> JA!!!!</label><br />
+          <button type="submit" style="margin-top: 10px;">Skicka svar</button>
+          <div class="loadingIndicator"></div>
+        </form>
       </div>
-
-      <div class="image-section">
-        <p class="fly-in-text">Kommer Lenne verkligen ta examen eller vad har hon ens gjort under studietiden?</p>
-        <p class="fly-in-text">YES, SHE DID IT!!!! Här kommer lite bevis:</p>
-        <div class="image-wrapper fade-in">
-          <img src="examen1.jpg" alt="examen 1" />
-          <img src="examen2.jpg" alt="examen 2" />
-        </div>
+      <div class="countdown-card">
+        <div id="countdown-number" class="countdown-number">0</div>
+        <div id="countdown-text" class="countdown-text">Laddar...</div>
       </div>
     </div>
-
-    <div id="guestlist" class="section">
-  <h2>Gästlista</h2>
-  <ul style="list-style: none; padding-left: 0; font-size: 18px;">
-    <li>👑 Lenne</li>
-    <li>🎉 Lotta Jansson Nurmilehto</li>
-    <li>🌟 Eivi</li>
-  </ul>
-  <p style="margin-top: 15px; font-style: italic;">...och fler är på väg!</p>
-</div>
-
-    <div id="osa" class="section">
-      <h2>OSA</h2>
-      <p>Anmäl dig här med ditt fullständiga namn och säkra din plats på LENNES EXAMENSFEST – tro mig, INGEN vill missa denna dag!</p>
-      <form onsubmit="submitEmail(event)">
-        <input type="hidden" name="sheet" value="OSA" />
-        <input type="text" id="firstname" name="firstname" placeholder="Förnamn" required />
-        <input type="text" id="lastname" name="lastname" placeholder="Efternamn" required />
-        <button type="submit">Skicka OSA</button>
-        <div class="loadingIndicator"></div>
-      </form>
+    <div class="image-section" id="teaser-section">
+      <h2>Festen närmar sig...</h2>
+      <div class="image-wrapper">
+        <img src="teaser1.jpg" alt="Teaser 1" />
+        <img src="teaser2.jpg" alt="Teaser 2" />
+        <img src="teaser3.jpg" alt="Teaser 3" />
+        <img src="teaser4.jpg" alt="Teaser 4" />
+        <img src="teaser5.jpg" alt="Teaser 5" />
+        <img src="teaser6.jpg" alt="Teaser 6" />
+        <img src="teaser7.jpg" alt="Teaser 7" />
+        <img src="teaser8.jpg" alt="Teaser 8" />
+      </div>
+    </div>
+    <div class="image-section">
+      <p class="fly-in-text">Kommer Lenne verkligen ta examen eller vad har hon ens gjort under studietiden?</p>
+      <p class="fly-in-text">YES, SHE DID IT!!!! Här kommer lite bevis:</p>
+      <div class="image-wrapper fade-in">
+        <img src="examen1.jpg" alt="examen 1" />
+        <img src="examen2.jpg" alt="examen 2" />
+      </div>
+    </div>
+  </div>
+  <div id="guestlist" class="section">
+    <h2 style="text-align: center;">Gästlista</h2>
+    <div class="guestlist-box">
+      <ul class="guestlist-names">
+        <li>👑 Lenne</li>
+        <li>🎉 Lotta Jansson Nurmilehto</li>
+        <li>🌟 Eivi</li>
+      </ul>
+      <p style="margin-top: 20px; font-style: italic;">...och fler är på väg!</p>
     </div>
   </div>
 </body>
