@@ -181,7 +181,7 @@
         countdownText.textContent = 'IDAG ÄR DET DAGS! 🎉';
         return;
       }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
       if (days > 6) {
         countdownNumber.textContent = days;
         countdownText.textContent = `${days} ANTAL DAGAR KVAR!!`;
