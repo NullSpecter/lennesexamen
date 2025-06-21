@@ -52,78 +52,41 @@
     .section.active {
       display: block;
     }
-    .info-container {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .card, .countdown-card {
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      width: 280px;
+    .guestlist-box {
+      background-color: #ffe4f0;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      margin: 0 auto;
       text-align: center;
-      box-sizing: border-box;
     }
-    .fun-card {
-      background-color: #ffe0f0;
-      border: 2px dashed #ff69b4;
-      animation: pulse 2s infinite;
+    .guestlist-names {
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
+    .guestlist-names li {
+      font-family: 'Dancing Script', cursive;
+      font-size: 26px;
+      margin: 10px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: flyInName 0.6s ease forwards;
     }
-    .countdown-number {
-      font-size: 72px;
-      font-weight: 700;
-      color: #FF69B4;
-      margin: 10px 0 0 0;
-      letter-spacing: 4px;
-    }
-    .countdown-text {
-      font-size: 22px;
-      font-weight: 600;
-      color: #333;
-      margin-top: 5px;
-    }
-    .loadingIndicator {
-      margin-top: 10px;
-      font-style: italic;
-      color: #666;
-      display: none;
+    .guestlist-names li:nth-child(1) { animation-delay: 0.1s; }
+    .guestlist-names li:nth-child(2) { animation-delay: 0.2s; }
+    .guestlist-names li:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes flyInName {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     .image-section {
       width: 100%;
       margin-top: 20px;
       text-align: center;
-    }
-    .fly-in-text {
-      font-size: 18px;
-      color: #FF69B4;
-      margin-bottom: 20px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: flyIn 1s ease forwards;
-      display: block;
-    }
-    .fly-in-text:first-of-type {
-      margin-bottom: 10px;
-      animation-delay: 0.3s;
-    }
-    .fly-in-text:nth-of-type(2) {
-      animation-delay: 1.3s;
-    }
-    @keyframes flyIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
     .image-wrapper {
       display: grid;
@@ -155,37 +118,6 @@
     }
     .image-wrapper img:hover {
       transform: scale(1.05);
-    }
-    .guestlist-box {
-      background-color: #ffe4f0;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      max-width: 500px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .guestlist-names {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .guestlist-names li {
-      font-family: 'Dancing Script', cursive;
-      font-size: 26px;
-      margin: 10px 0;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: flyInName 0.6s ease forwards;
-    }
-    .guestlist-names li:nth-child(1) { animation-delay: 0.1s; }
-    .guestlist-names li:nth-child(2) { animation-delay: 0.2s; }
-    .guestlist-names li:nth-child(3) { animation-delay: 0.3s; }
-    @keyframes flyInName {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
   </style>
   <script>
@@ -245,9 +177,34 @@
     <a href="#" onclick="showSection('osa')">OSA</a>
   </div>
   <div class="content">
-    <!-- befintlig info/guestlist content här -->
-    <!-- du har redan lagt det rätt -->
-    <!-- vi lägger tillbaka osa-formuläret här -->
+    <div id="info" class="section active">
+      <div class="image-section" id="teaser-section">
+        <h2>Festen närmar sig...</h2>
+        <div class="image-wrapper">
+          <img src="teaser1.jpg" alt="Teaser 1" />
+          <img src="teaser2.jpg" alt="Teaser 2" />
+          <img src="teaser3.jpg" alt="Teaser 3" />
+          <img src="teaser4.jpg" alt="Teaser 4" />
+          <img src="teaser5.jpg" alt="Teaser 5" />
+          <img src="teaser6.jpg" alt="Teaser 6" />
+          <img src="teaser7.jpg" alt="Teaser 7" />
+          <img src="teaser8.jpg" alt="Teaser 8" />
+        </div>
+      </div>
+    </div>
+
+    <div id="guestlist" class="section">
+      <h2>Gästlista</h2>
+      <div class="guestlist-box">
+        <ul class="guestlist-names">
+          <li>👑 Lenne</li>
+          <li>🎉 Lotta Jansson Nurmilehto</li>
+          <li>🌟 Eivi</li>
+        </ul>
+        <p style="margin-top: 15px; font-style: italic;">...och fler är på väg!</p>
+      </div>
+    </div>
+
     <div id="osa" class="section">
       <h2>OSA</h2>
       <p>Anmäl dig här med ditt fullständiga namn och säkra din plats på LENNES EXAMENSFEST – tro mig, INGEN vill missa denna dag!</p>
