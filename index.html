@@ -218,7 +218,6 @@
     <a href="#" onclick="showSection('osa')">OSA</a>
   </div>
   <div class="content">
-    <p id="secretMessage" style="display:none; text-align:center; font-size:18px; margin-top:20px; color:#ff69b4;"></p>
     <div id="info" class="section active">
       <div class="countdown-info-container">
         <div class="info-card">
@@ -296,9 +295,18 @@
     </div>
   </div>
 
-  <button id="secretBtn" style="position:fixed; bottom:10px; right:10px; background-color:#ffc0cb; border:none; padding:10px 15px; border-radius:8px; cursor:pointer;">
+  <!-- Hemlig knapp -->
+<button id="secretBtn" style="position:fixed; bottom:10px; right:10px; background-color:#ffc0cb; border:none; padding:10px 15px; border-radius:8px; cursor:pointer;">
   🤫
 </button>
+
+<!-- Toast-popup -->
+<div id="toast" style="display:none; position:fixed; bottom:60px; right:20px; background:#ff69b4; color:white; padding:12px 18px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.2); z-index:1000;"></div>
+
+<!-- Pling-ljud -->
+<audio id="plingSound" preload="auto">
+  <source src="https://www.soundjay.com/buttons/sounds/button-16.mp3" type="audio/mpeg">
+</audio>
 
 <script>
   const messages = [
@@ -319,13 +327,21 @@
     "Vi manifesterar sol. Vädergudarna säger fest.",
     "Din inbjudan är nu förseglad med glitter."
   ];
+
   document.getElementById("secretBtn").addEventListener("click", () => {
+    const toast = document.getElementById("toast");
+    const pling = document.getElementById("plingSound");
     const msg = messages[Math.floor(Math.random() * messages.length)];
-    const box = document.getElementById("secretMessage");
-    box.textContent = msg;
-    box.style.display = "block";
+    toast.textContent = msg;
+    toast.style.display = "block";
+    pling.play();
+
+    setTimeout(() => {
+      toast.style.display = "none";
+    }, 4000);
   });
 </script>
+
 
 
   <!-- JavaScript för att skicka OSA till Google Apps Script -->
