@@ -232,11 +232,11 @@
           <div id="countdown-text" class="countdown-text">Laddar...</div>
         </div>
         <div class="info-card">
-  <h2>Praktisk info</h2>
-  <p><strong>Vad behöver jag ha med mig?</strong> Ett riktigt glatt humör. Det kommer att bjudas på mat och lite god dryck under kvällen men ta med det du gillar att dricka.</p>
-  <p><strong>Plats:</strong> Vi kommer vara utomhus så håll tummar och tår för bra väder. Be till vädergudarna.  Badmöjligheter finns. </p>
-  <p><strong>Kost:</strong> Borde ha koll på allas kost men säg till Lenne om det är något annat kring mat hon behöver veta.</p>
-  </div>
+          <h2>Praktisk info</h2>
+          <p><strong>Vad behöver jag ha med mig?</strong> Ett riktigt glatt humör. Det kommer att bjudas på mat och lite god dryck under kvällen men ta med det du gillar att dricka.</p>
+          <p><strong>Plats:</strong> Vi kommer vara utomhus så håll tummar och tår för bra väder. Be till vädergudarna. Badmöjligheter finns.</p>
+          <p><strong>Kost:</strong> Borde ha koll på allas kost men säg till Lenne om det är något annat kring mat hon behöver veta.</p>
+        </div>
       </div>
       <div class="image-section" id="teaser-section">
         <h2>Festen närmar sig...</h2>
@@ -285,14 +285,36 @@
     <div id="osa" class="section">
       <h2>OSA</h2>
       <p>Anmäl dig här med ditt fullständiga namn och säkra din plats på LENNES EXAMENSFEST – tro mig, INGEN vill missa denna dag!</p>
-      <form onsubmit="submitEmail(event)">
+      <form id="osaForm">
         <input type="hidden" name="sheet" value="OSA" />
         <input type="text" id="firstname" name="firstname" placeholder="Förnamn" required />
         <input type="text" id="lastname" name="lastname" placeholder="Efternamn" required />
         <button type="submit">Skicka OSA</button>
-        <div class="loadingIndicator"></div>
+        <div id="confirmation" style="margin-top: 10px; color: green;"></div>
       </form>
     </div>
   </div>
+
+  <!-- JavaScript för att skicka OSA till Google Apps Script -->
+  <script>
+    document.getElementById("osaForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+
+      fetch("https://script.google.com/macros/s/1gzX_0el__Ph81u8u-uCmXB2GCMo3rWoXHcWjbt2I7u4/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(() => {
+        form.reset();
+        document.getElementById("confirmation").textContent = "Tack! Din OSA är registrerad 🎉";
+      })
+      .catch(() => {
+        document.getElementById("confirmation").textContent = "Oj! Något gick fel. Försök igen.";
+      });
+    });
+  </script>
 </body>
 </html>
