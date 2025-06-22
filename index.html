@@ -295,6 +295,28 @@
     </div>
   </div>
 
+  <button id="secretBtn" style="position:fixed; bottom:10px; right:10px; background-color:#ffc0cb; border:none; padding:10px 15px; border-radius:8px; cursor:pointer;">
+  🤫
+</button>
+<p id="secretMessage" style="display:none; text-align:center; font-size:18px; margin-top:20px; color:#ff69b4;"></p>
+
+<script>
+  const messages = [
+    "Du hittade den hemliga knappen! 🥳",
+    "Lenne vet att du snokar 😏",
+    "Psst... shotsen är gömda i köket 🍸",
+    "Du är nu officiellt VIP 🎟️",
+    "Tryck inte här igen... eller?"
+  ];
+  document.getElementById("secretBtn").addEventListener("click", () => {
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    const box = document.getElementById("secretMessage");
+    box.textContent = msg;
+    box.style.display = "block";
+  });
+</script>
+
+
   <!-- JavaScript för att skicka OSA till Google Apps Script -->
   <script>
     document.getElementById("osaForm").addEventListener("submit", function (e) {
